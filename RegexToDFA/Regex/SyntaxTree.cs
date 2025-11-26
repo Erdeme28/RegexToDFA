@@ -14,12 +14,35 @@ namespace RegexToDFA.Regex
 {
     internal class SyntaxTree
     {
-        // TODO: definește o enumerare (enum) NodeType pentru tipurile de noduri din arbore (Symbol, Concat, Union, Star, Plus, Question, EndMarker)
-        // TODO: definește o clasă SyntaxNode care să conțină:
-        //       - tipul nodului (NodeType)
-        //       - simbolul caracterului (dacă este nod de tip Symbol)
-        //       - referințe către nodurile copil (Left, Right)
-        //       - atribute precum Nullable, FirstPos, LastPos, Position (pentru metoda followpos)
+        // Enumeration for node types in the syntax tree
+        internal enum NodeType
+        {
+            Symbol,
+            Concat,
+            Union,
+            Star,
+            Plus,
+            Question,
+            EndMarker
+        }
+
+        // Class representing a node in the syntax tree
+        internal class SyntaxNode
+        {
+            public NodeType Type { get; set; }
+            public char Symbol { get; set; }
+            public SyntaxNode? Left { get; set; }
+            public SyntaxNode? Right { get; set; }
+            public bool Nullable { get; set; }
+            public HashSet<int> FirstPos { get; set; } = new HashSet<int>();
+            public HashSet<int> LastPos { get; set; } = new HashSet<int>();
+            public int Position { get; set; }
+            public SyntaxNode(NodeType type, char symbol = '\0')
+            {
+                Type = type;
+                Symbol = symbol;
+            }
+        }
         // TODO: implementează constructori și metode utile (ex: TraversePreorder)
         // TODO: implementează o clasă statică SyntaxTreePrinter care afișează arborele în format ASCII
     }
