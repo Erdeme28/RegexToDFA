@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RegexToDFA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+079d404d0ac27170fe3d94b3a2c8aae89308e09e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2c0597f615dbedea043b1fdfde78e8cea31dddd")]
 [assembly: System.Reflection.AssemblyProductAttribute("RegexToDFA")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RegexToDFA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
