@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using RegexToDFA.Automata;
 using RegexToDFA.Converters;
+using RegexToDFA.Utils;
 
 namespace RegexToDFA
 {
@@ -73,6 +74,17 @@ namespace RegexToDFA
                 return;
             }
 
+            // dupa construirea DFA-ului, salvam automat in output.txt
+            try
+            {
+                using (var writer = new StreamWriter(outputPath, false))
+                {
+                    TablePrinter.PrintAutomaton(dfa, writer);
+                }
+                // nu afisam calea completa in consola conform preferintei utilizatorului
+            }
+            catch { /* ignoram erorile de salvare la start */ }
+
             // Meniu
             while (true)
             {
@@ -98,18 +110,22 @@ namespace RegexToDFA
                 else if (opt == "2")
                 {
                     Console.WriteLine("Arbore sintactic:");
-                    PrintSyntaxTree(root, Console.Out);
+                    // Use the graphical syntax tree printer
+                    Regex.SyntaxTree.SyntaxTreePrinter.Print(root, Console.Out);
                 }
                 else if (opt == "3")
                 {
                     Console.WriteLine("Automatul determinist rezultat:");
-                    dfa.PrintAutomaton();
+                    TablePrinter.PrintAutomaton(dfa);
                 }
                 else if (opt == "4")
                 {
                     try
                     {
-                        dfa.SaveToFile(outputPath);
+                        using (var writer = new StreamWriter(outputPath))
+                        {
+                            TablePrinter.PrintAutomaton(dfa, writer);
+                        }
                         Console.WriteLine("Automatul a fost salvat in fisierul output.txt din proiect.");
                     }
                     catch (Exception ex)
@@ -136,33 +152,6 @@ namespace RegexToDFA
             }
 
             Console.WriteLine("La revedere.");
-        }
-
-        // Afișează arborele sintactic într-o manieră recursivă
-        private static void PrintSyntaxTree(Regex.SyntaxTree.SyntaxNode node, TextWriter writer, int indent =0)
-        {
-            if (node == null) return;
-
-            string pad = new string(' ', indent *2);
-            writer.Write(pad);
-            writer.WriteLine($"Type: {node.Type}" + (node.Symbol != '\0' ? $", Symbol: '{node.Symbol}'" : "") + $", Pos: {node.Position}");
-
-            // afisam nullable, firstpos, lastpos daca sunt disponibile
-            writer.Write(pad);
-            writer.WriteLine($"{(node.Nullable ? "Nullable" : "NotNullable")}, FirstPos={{" + string.Join(",", node.FirstPos.OrderBy(x => x)) + "}}, LastPos={{" + string.Join(",", node.LastPos.OrderBy(x => x)) + "}}");
-
-            if (node.Left != null)
-            {
-                writer.Write(pad);
-                writer.WriteLine("Left:");
-                PrintSyntaxTree(node.Left, writer, indent +1);
-            }
-            if (node.Right != null)
-            {
-                writer.Write(pad);
-                writer.WriteLine("Right:");
-                PrintSyntaxTree(node.Right, writer, indent +1);
-            }
         }
     }
 }

@@ -94,53 +94,6 @@ namespace RegexToDFA.Automata
         }
 
 
-        // Prints the automaton in a readable table format
-        public void PrintAutomaton()
-        {
-            if (!VerifyAutomaton(out var errors))
-            {
-                Console.WriteLine("Automaton is not well-defined:");
-                foreach (var error in errors)
-                    Console.WriteLine($"- {error}");
-                return;
-            }
-
-            var symbols = Sigma.OrderBy(s => s).ToList();
-            var states = Q.OrderBy(s => s).ToList();
-
-            int stateColWidth =
-                Math.Max(states.Max(s => s.Length) + 3, 10);
-
-            Console.Write("State".PadRight(stateColWidth));
-            foreach (var symbol in symbols)
-                Console.Write(symbol.ToString().PadRight(6));
-            Console.WriteLine();
-
-            Console.WriteLine(new string('-', stateColWidth + symbols.Count * 6));
-
-            foreach (var state in states)
-            {
-                string mark = "";
-                if (state == q0) mark += "->";
-                else mark += "  ";
-                if (F.Contains(state)) mark += "*";
-                else mark += " ";
-
-                Console.Write((mark + state).PadRight(stateColWidth));
-
-                foreach (var symbol in symbols)
-                {
-                    string nextState = Delta[state].TryGetValue(symbol, out var ns) ? ns : "-";
-                    Console.Write(nextState.PadRight(6));
-                }
-
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("\n Legend: -> initial, * final");
-        }
-
-
         // Checks if a given word is accepted by the automaton
         public bool CheckWord(string word)
         {

@@ -1,34 +1,32 @@
 Q (States):
-  { {DEAD}, {q0}, {q1,q2}, {q10,q13,q14,q15,q17,q18,q6}, {q10,q14,q15,q17,q18,q6,q9}, {q10,q14,q16,q17,q18,q5,q6}, {q11,q12}, {q19,q20,q24,q25}, {q20,q23,q25}, {q21,q22}, {q3,q4}, {q7,q8} }
+ { {DEAD}, {q0}, {q1,q2}, {q10,q13,q14,q15,q17,q18,q6}, {q10,q14,q15,q17,q18,q6,q9}, {q10,q14,q16,q17,q18,q5,q6}, {q11,q12}, {q19,q20,q24,q25}, {q20,q23,q25}, {q21,q22}, {q3,q4}, {q7,q8} }
 
 Σ (Alphabet):
-  { a, b, c }
+ { a, b, c }
 
 Initial State (q0):
-  {q0}
+ {q0}
 
 F (Final States):
-  { {q19,q20,q24,q25}, {q20,q23,q25} }
+ { {q19,q20,q24,q25}, {q20,q23,q25} }
 
-Transition Function δ(q, a):
--------------------------------------
-State       a       b       c       
-------------------------------------
-{DEAD}      {DEAD}  {DEAD}  {DEAD}  
-{q0}        {q1,q2} {DEAD}  {DEAD}  
-{q1,q2}     {DEAD}  {q3,q4} {DEAD}  
-{q10,q13,q14,q15,q17,q18,q6}{q7,q8} {q11,q12}{q19,q20,q24,q25}
-{q10,q14,q15,q17,q18,q6,q9}{q7,q8} {q11,q12}{q19,q20,q24,q25}
-{q10,q14,q16,q17,q18,q5,q6}{q7,q8} {q11,q12}{q19,q20,q24,q25}
-{q11,q12}   {DEAD}  {q10,q13,q14,q15,q17,q18,q6}{DEAD}  
-{q19,q20,q24,q25}{q21,q22}{DEAD}  {DEAD}  
-{q20,q23,q25}{q21,q22}{DEAD}  {DEAD}  
-{q21,q22}   {DEAD}  {q20,q23,q25}{DEAD}  
-{q3,q4}     {q10,q14,q16,q17,q18,q5,q6}{DEAD}  {DEAD}  
-{q7,q8}     {q10,q14,q15,q17,q18,q6,q9}{DEAD}  {DEAD}  
+State                            | a                    | b                    | c                   
+---------------------------------+----------------------+----------------------+---------------------
+  {DEAD}                         | {DEAD}               | {DEAD}               | {DEAD}              
+-> {q0}                          | {q1,q2}              | {DEAD}               | {DEAD}              
+  {q1,q2}                        | {DEAD}               | {q3,q4}              | {DEAD}              
+  {q10,q13,q14,q15,q17,q18,q6}   | {q7,q8}              | {q11,q12}            | {q19,q20,q24,q25}   
+  {q10,q14,q15,q17,q18,q6,q9}    | {q7,q8}              | {q11,q12}            | {q19,q20,q24,q25}   
+  {q10,q14,q16,q17,q18,q5,q6}    | {q7,q8}              | {q11,q12}            | {q19,q20,q24,q25}   
+  {q11,q12}                      | {DEAD}               | {q10,q13,q14,q15,... | {DEAD}              
+ *{q19,q20,q24,q25}              | {q21,q22}            | {DEAD}               | {DEAD}              
+ *{q20,q23,q25}                  | {q21,q22}            | {DEAD}               | {DEAD}              
+  {q21,q22}                      | {DEAD}               | {q20,q23,q25}        | {DEAD}              
+  {q3,q4}                        | {q10,q14,q16,q17,... | {DEAD}               | {DEAD}              
+  {q7,q8}                        | {q10,q14,q15,q17,... | {DEAD}               | {DEAD}              
 
 Legend:
-  Row = current state
-  Column = symbol
-  Entry δ(q, a) = next state
+ Row = current state
+ Column = symbol
+ Entry δ(q, a) = next state
 
