@@ -1,10 +1,4 @@
-﻿// ============================================================================
-// Fișier: Program.cs
-// Partea3 din cerință: funcția main.
-// Scop: Punctul de pornire al aplicației. Citește expresia regulată din fișier,
-// apelează conversia RegexToDFA și gestionează meniul pentru interacțiunea cu utilizatorul.
-// ============================================================================
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -20,7 +14,6 @@ namespace RegexToDFA
         {
             Console.WriteLine("RegexToDFA - Tema1");
 
-            // Folosim fisierul input.txt si output.txt din directorul proiectului
             string projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
             string inputPath = Path.Combine(projectRoot, "input.txt");
             string outputPath = Path.Combine(projectRoot, "output.txt");
@@ -28,7 +21,6 @@ namespace RegexToDFA
             Console.WriteLine("Using project input/output files.");
             if (!File.Exists(inputPath))
             {
-                // Exemplu de expresie regulata
                 File.WriteAllText(inputPath, "aba(aa|bb)*c(ab)*");
                 Console.WriteLine("Fisier input.txt creat cu exemplu.");
             }
@@ -52,16 +44,12 @@ namespace RegexToDFA
 
             var parser = new Regex.RegexParser();
 
-            // Extind expresia cu markerul final si concatenari explicite
             string extended = parser.InsertExplicitConcat(regex + "#");
 
-            // Obtine forma postfixata
             string postfix = parser.ToPostFix(extended);
 
-            // Construiește arborele sintactic
             var root = parser.BuildSyntaxTreeFromPostfix(postfix);
 
-            // Construiește AFD folosind converterul (Thompson + subset)
             var converter = new RegexToDfaConverter();
             DeterministicFiniteAutomaton? dfa = null;
             try
@@ -74,16 +62,14 @@ namespace RegexToDFA
                 return;
             }
 
-            // dupa construirea DFA-ului, salvam automat in output.txt
             try
             {
                 using (var writer = new StreamWriter(outputPath, false))
                 {
                     TablePrinter.PrintAutomaton(dfa, writer);
                 }
-                // nu afisam calea completa in consola conform preferintei utilizatorului
             }
-            catch { /* ignoram erorile de salvare la start */ }
+            catch {  }
 
             // Meniu
             while (true)
@@ -110,7 +96,6 @@ namespace RegexToDFA
                 else if (opt == "2")
                 {
                     Console.WriteLine("Arbore sintactic:");
-                    // Use the graphical syntax tree printer
                     Regex.SyntaxTree.SyntaxTreePrinter.Print(root, Console.Out);
                 }
                 else if (opt == "3")

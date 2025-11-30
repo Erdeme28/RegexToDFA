@@ -1,11 +1,4 @@
-﻿// ============================================================================
-// Fișier: DeterministicFiniteAutomaton.cs
-// Partea 1 din cerință: definirea clasei DeterministicFiniteAutomaton.
-// Scop: Reprezintă automatul finit determinist (AFD) construit dintr-o expresie regulată.
-// Conține membrii: Q, Σ, δ, q0 și F.
-// Include metodele cerute: VerifyAutomaton, PrintAutomaton, CheckWord.
-// ============================================================================
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +15,6 @@ namespace RegexToDFA.Automata
         public string? q0 { get; set; }
         public HashSet<string> F { get; } = new HashSet<string>();
 
-        // Adds a state to Q
         public void AddState(string state, bool isFinal = false)
         {
             if (!Q.Contains(state))
@@ -35,14 +27,12 @@ namespace RegexToDFA.Automata
                 F.Add(state);
         }
 
-        // Adds a symbol to Sigma
         public void AddSymbol(char c)
         {
             if (!Sigma.Contains(c))
                 Sigma.Add(c);
         }
 
-        // Adds a transition Delta(from, symbol) = to
         public void AddTransition(string from, char symbol, string to)
         {
             AddState(from);
@@ -56,7 +46,6 @@ namespace RegexToDFA.Automata
                     $"Non-deterministic transition detected: ({from}, {symbol}) -> {Delta[from][symbol]} / {to}");
         }
 
-        // Verifies if the automaton is well-defined
         public bool VerifyAutomaton(out List<string> errors)
         {
             errors = new List<string>();
@@ -94,7 +83,6 @@ namespace RegexToDFA.Automata
         }
 
 
-        // Checks if a given word is accepted by the automaton
         public bool CheckWord(string word)
         {
             if (q0 == null)
@@ -125,7 +113,6 @@ namespace RegexToDFA.Automata
         }
 
 
-        // Saves the automaton to a text file
         public void SaveToFile(string filePath)
         {
             using (var writer = new StreamWriter(filePath))

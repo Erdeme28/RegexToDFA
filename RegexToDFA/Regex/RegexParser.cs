@@ -1,10 +1,4 @@
-﻿// ============================================================================
-// Fișier: RegexParser.cs
-// Partea 2 din cerință (pregătirea pentru RegexToDFA).
-// Scop: Parsează expresia regulată - adaugă concatenări explicite,
-// o transformă în forma postfixată (notare poloneză) și construiește arborele sintactic.
-// ============================================================================
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +9,6 @@ namespace RegexToDFA.Regex
 {
     internal class RegexParser
     {
-        // Method to insert explicit concatenation operators in the regex
         public string InsertExplicitConcat(string regex)
         {
             var result = new StringBuilder();
@@ -48,7 +41,6 @@ namespace RegexToDFA.Regex
             return result.ToString();
         }
 
-        // Method to convert infix regex to postfix notation using Shunting Yard algorithm
         public string ToPostFix(string regex)
         {
             var output = new StringBuilder();
@@ -106,7 +98,6 @@ namespace RegexToDFA.Regex
             return output.ToString();
         }
 
-        // Method to build the syntax tree from the postfix regex
         public SyntaxTree.SyntaxNode BuildSyntaxTreeFromPostfix(string postfix)
         {
             var stack = new Stack<SyntaxTree.SyntaxNode>();
@@ -189,7 +180,6 @@ namespace RegexToDFA.Regex
             return stack.Pop();
         }
 
-        // Method to check if a regex is valid before processing
         public bool IsValidRegex(string regex, out string error)
         {
             error = "";
@@ -200,7 +190,6 @@ namespace RegexToDFA.Regex
                 return false;
             }
 
-            //Check for invalid characters
             foreach (char c in regex)
             {
                 if (!(char.IsLetterOrDigit(c) ||
@@ -213,7 +202,6 @@ namespace RegexToDFA.Regex
                 }
             }
 
-            // Check for parantheses balance
             int balance = 0;
             foreach (char c in regex)
             {
@@ -232,26 +220,22 @@ namespace RegexToDFA.Regex
                 return false;
             }
 
-            // Check illegal operator placement
             for (int i = 0; i < regex.Length; i++)
             {
                 char c = regex[i];
 
-                // Unary operators cannot be at the start
                 if ((c == '*' || c == '+' || c == '?') && i == 0)
                 {
                     error = $"Operator '{c}' cannot appear at the beginning.";
                     return false;
                 }
 
-                // Binary operators cannot appear at start or end
                 if ((c == '|') && (i == 0 || i == regex.Length - 1))
                 {
                     error = $"Operator '{c}' cannot be first or last.";
                     return false;
                 }
 
-                // Two binary operators in a row -> invalid: || or |)
                 if (i > 0)
                 {
                     char prev = regex[i - 1];

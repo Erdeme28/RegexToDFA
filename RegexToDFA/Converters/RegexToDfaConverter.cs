@@ -1,12 +1,4 @@
-﻿// ============================================================================
-// Fișier: RegexToDfaConverter.cs
-// Partea2 din cerință: funcția RegexToDFA.
-// Scop: Transformă o expresie regulată într-un automat finit determinist (AFD).
-// Modificat: folosește construcția Thompson pentru a obține mai întâi un AFN cu
-// tranziții lambda (ε) și apoi construcția subset pentru obținerea AFD-ului.
-// Păstrează structura și comentariile inițiale.
-// ============================================================================
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,27 +8,21 @@ namespace RegexToDFA.Converters
 {
     internal class RegexToDfaConverter
     {
-        // Method to convert regex to DFA
         public Automata.DeterministicFiniteAutomaton RegexToDFA(string regex)
         {
             var parser = new Regex.RegexParser();
 
-            // Add final symbol #
             string extended = parser.InsertExplicitConcat(regex + "#");
 
-            // Convert to postfix
             string postfix = parser.ToPostFix(extended);
 
-            // --- BUILD NFA (Thompson) -----------------------------------------
             var nfa = BuildNfaFromPostfix(postfix);
 
-            // --- CONVERT NFA (with ε) to DFA (subset construction) ----------
             var dfa = nfa.ToDeterministic();
 
             return dfa;
         }
 
-        // Build an NFA from postfix expression using Thompson construction
         private Automata.NondeterministicFiniteAutomaton BuildNfaFromPostfix(string postfix)
         {
             var stack = new Stack<Automata.NondeterministicFiniteAutomaton>();
@@ -80,12 +66,10 @@ namespace RegexToDFA.Converters
                     }
                     else
                     {
-                        // Unknown operator - ignore
                     }
                 }
                 else
                 {
-                    // symbol (including '#' end marker)
                     var A = ThompsonSymbol(token, ref counter);
                     stack.Push(A);
                 }
@@ -97,7 +81,6 @@ namespace RegexToDFA.Converters
             return stack.Pop();
         }
 
-        // Helpers: Thompson fragments
         private Automata.NondeterministicFiniteAutomaton ThompsonSymbol(char c, ref int counter)
         {
             var nfa = new Automata.NondeterministicFiniteAutomaton();
@@ -114,16 +97,13 @@ namespace RegexToDFA.Converters
 
         private Automata.NondeterministicFiniteAutomaton ThompsonConcat(Automata.NondeterministicFiniteAutomaton A, Automata.NondeterministicFiniteAutomaton B)
         {
-            // Merge B into A, connect A.final -> ε -> B.start (but we will rewire: A.final loses final and merge with B.start)
             var C = Automata.NondeterministicFiniteAutomaton.Merge(A, B);
 
-            // For each final state of A connect epsilon to B.q0
             foreach (var f in A.F)
             {
                 C.AddEpsilonTransition(f, B.q0!);
             }
 
-            // New initial is A.q0; final states are B.F
             C.q0 = A.q0;
             C.F.Clear();
             foreach (var f in B.F)
@@ -141,11 +121,9 @@ namespace RegexToDFA.Converters
             C.AddState(newStart);
             C.AddState(newFinal);
 
-            // ε from newStart to A.q0 and B.q0
             C.AddEpsilonTransition(newStart, A.q0!);
             C.AddEpsilonTransition(newStart, B.q0!);
 
-            // ε from each final of A and B to newFinal
             foreach (var f in A.F)
                 C.AddEpsilonTransition(f, newFinal);
             foreach (var f in B.F)
@@ -167,7 +145,6 @@ namespace RegexToDFA.Converters
             C.AddState(newStart);
             C.AddState(newFinal);
 
-            // ε transitions
             C.AddEpsilonTransition(newStart, C.q0!);
             C.AddEpsilonTransition(newStart, newFinal);
             foreach (var f in A.F)
@@ -185,7 +162,6 @@ namespace RegexToDFA.Converters
 
         private Automata.NondeterministicFiniteAutomaton ThompsonPlus(Automata.NondeterministicFiniteAutomaton A, ref int counter)
         {
-            // A+ = A concat A* (but we implement as: A with ε from finals to start and new start/new final ensuring at least one)
             var C = Automata.NondeterministicFiniteAutomaton.Clone(A);
 
             string newStart = "q" + (counter++);
@@ -216,11 +192,9 @@ namespace RegexToDFA.Converters
             C.AddState(newStart);
             C.AddState(newFinal);
 
-            // ε from newStart to old start and to newFinal
             C.AddEpsilonTransition(newStart, C.q0!);
             C.AddEpsilonTransition(newStart, newFinal);
 
-            // ε from old finals to newFinal
             foreach (var f in A.F)
                 C.AddEpsilonTransition(f, newFinal);
 
@@ -231,7 +205,6 @@ namespace RegexToDFA.Converters
             return C;
         }
 
-        // Simple operator check
         private bool IsOperator(char c)
         {
             return c == '|' || c == '.' || c == '*' || c == '+' || c == '?';

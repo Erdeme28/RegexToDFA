@@ -1,9 +1,4 @@
-﻿// ============================================================================
-// Fișier: TablePrinter.cs
-// Partea3 din cerință: interfața de interacțiune.
-// Scop: Afișează meniul în consolă și gestionează afișările / citirea de cuvinte.
-// ============================================================================
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,11 +10,9 @@ namespace RegexToDFA.Utils
 {
     internal static class TablePrinter
     {
-        // Print to console (convenience)
         public static void PrintAutomaton(DeterministicFiniteAutomaton dfa)
             => PrintAutomaton(dfa, Console.Out);
 
-        // Print to any TextWriter (console, file, tests)
         public static void PrintAutomaton(DeterministicFiniteAutomaton dfa, TextWriter writer)
         {
             if (!dfa.VerifyAutomaton(out var errors))
@@ -53,10 +46,8 @@ namespace RegexToDFA.Utils
                 try { consoleWidth = Console.WindowWidth; } catch { consoleWidth = 0; }
             }
 
-            // If printing to console and width is small, use vertical per-state format
             if (isConsole && consoleWidth > 0 && consoleWidth < 100)
             {
-                // Vertical compact format
                 foreach (var state in states)
                 {
                     string mark = (state == dfa.q0 ? "->" : " ") + (dfa.F.Contains(state) ? "*" : " ");
@@ -72,23 +63,19 @@ namespace RegexToDFA.Utils
                 return;
             }
 
-            // Otherwise print table form (file or wide console)
             int maxStateName = states.Max(s => s.Length);
             int stateColWidth = Math.Max(maxStateName + 4, 12);
             int symbolColWidth = Math.Max(8, Math.Min(24, Math.Max(8, maxStateName / 2 + 6)));
 
             if (isConsole && consoleWidth > 0)
             {
-                // try to fit into console width: compute available and adjust symbol width
                 int separators = (symbols.Count) * 3; // ' | '
                 int minTotal = stateColWidth + separators + symbols.Count * 6;
                 if (minTotal > consoleWidth)
                 {
-                    // reduce state column first
                     int spare = Math.Max(0, consoleWidth - (separators + symbols.Count * 6));
                     stateColWidth = Math.Max(8, spare);
                 }
-                // recompute symbolColWidth based on remaining space
                 int remaining = Math.Max(0, consoleWidth - stateColWidth - separators);
                 if (symbols.Count > 0)
                 {
@@ -96,7 +83,6 @@ namespace RegexToDFA.Utils
                 }
             }
 
-            // Header row
             writer.Write("State".PadRight(stateColWidth));
             foreach (var symbol in symbols)
             {
@@ -105,7 +91,6 @@ namespace RegexToDFA.Utils
             }
             writer.WriteLine();
 
-            // Separator line
             writer.Write(new string('-', stateColWidth));
             foreach (var symbol in symbols)
             {
@@ -114,7 +99,6 @@ namespace RegexToDFA.Utils
             }
             writer.WriteLine();
 
-            // Truncation helper
             string Truncate(string s, int width)
             {
                 if (s.Length <= width) return s;
@@ -122,7 +106,6 @@ namespace RegexToDFA.Utils
                 return s.Substring(0, width - 3) + "...";
             }
 
-            // Rows
             foreach (var state in states)
             {
                 string mark = (state == dfa.q0 ? "->" : " ") + (dfa.F.Contains(state) ? "*" : " ");
@@ -146,7 +129,6 @@ namespace RegexToDFA.Utils
             writer.Flush();
         }
 
-        // Reads multiple words from console until empty line is entered
         public static List<string> ReadWords()
         {
             var words = new List<string>();
@@ -159,6 +141,5 @@ namespace RegexToDFA.Utils
             return words;
         }
 
-        // TODO: implementează metoda PrintMenu() pentru afișarea meniului principal în consolă
     }
 }
