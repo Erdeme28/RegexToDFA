@@ -8,23 +8,23 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Larisa Andreea\\.nuget\\packages\\": {},
+    "C:\\Users\\David\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\facultate\\Sem1\\LFC\\RegexToDFA\\RegexToDFA\\RegexToDFA.csproj",
+      "projectUniqueName": "C:\\Users\\David\\Desktop\\RegexToDFA\\RegexToDFA\\RegexToDFA.csproj",
       "projectName": "RegexToDFA",
-      "projectPath": "G:\\facultate\\Sem1\\LFC\\RegexToDFA\\RegexToDFA\\RegexToDFA.csproj",
-      "packagesPath": "C:\\Users\\Larisa Andreea\\.nuget\\packages\\",
-      "outputPath": "G:\\facultate\\Sem1\\LFC\\RegexToDFA\\RegexToDFA\\obj\\",
+      "projectPath": "C:\\Users\\David\\Desktop\\RegexToDFA\\RegexToDFA\\RegexToDFA.csproj",
+      "packagesPath": "C:\\Users\\David\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\David\\Desktop\\RegexToDFA\\RegexToDFA\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Larisa Andreea\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\David\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -33,6 +33,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
